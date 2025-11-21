@@ -1,12 +1,12 @@
 "use client";
 
+import * as React from "react";
 import { LoadingButton } from "@/components/loading-button";
-import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteApplication } from "./actions";
 
 export function DeleteApplication() {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = React.useTransition();
 
   async function handleDeleteApplication() {
     startTransition(async () => {

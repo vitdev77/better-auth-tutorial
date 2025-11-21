@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { LoadingButton } from "@/components/loading-button";
 import { PasswordInput } from "@/components/password-input";
 import {
@@ -23,7 +24,6 @@ import { passwordSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -44,7 +44,7 @@ const signUpSchema = z
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
   const router = useRouter();
 
@@ -65,7 +65,7 @@ export function SignUpForm() {
   const loading = form.formState.isSubmitting;
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
         <CardDescription className="text-xs md:text-sm">
@@ -157,9 +157,12 @@ export function SignUpForm() {
       </CardContent>
       <CardFooter>
         <div className="flex w-full justify-center border-t pt-4">
-          <p className="text-muted-foreground text-center text-xs">
+          <p className="text-muted-foreground text-center text-sm">
             Already have an account?{" "}
-            <Link href="/sign-in" className="underline">
+            <Link
+              href="/sign-in"
+              className="hover:text-primary underline underline-offset-4"
+            >
               Sign in
             </Link>
           </p>

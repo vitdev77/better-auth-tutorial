@@ -1,7 +1,7 @@
 "use client";
 
+import * as React from "react";
 import { LoadingButton } from "@/components/loading-button";
-import { useState } from "react";
 
 interface ResendVerificationButtonProps {
   email: string;
@@ -10,9 +10,9 @@ interface ResendVerificationButtonProps {
 export function ResendVerificationButton({
   email,
 }: ResendVerificationButtonProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
   async function resendVerificationEmail() {
     // TODO: Resend verification email

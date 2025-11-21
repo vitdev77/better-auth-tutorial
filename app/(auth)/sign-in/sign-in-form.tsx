@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { GoogleIcon } from "@/components/icons/GoogleIcon";
 import { LoadingButton } from "@/components/loading-button";
@@ -26,7 +27,6 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -39,8 +39,8 @@ const signInSchema = z.object({
 type SignInValues = z.infer<typeof signInSchema>;
 
 export function SignInForm() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -63,7 +63,7 @@ export function SignInForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
         <CardDescription className="text-xs md:text-sm">
@@ -82,7 +82,7 @@ export function SignInForm() {
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="your@email.com"
+                      placeholder="m@example.com"
                       {...field}
                     />
                   </FormControl>
@@ -100,14 +100,14 @@ export function SignInForm() {
                     <FormLabel>Password</FormLabel>
                     <Link
                       href="/forgot-password"
-                      className="ml-auto inline-block text-sm underline"
+                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
                     </Link>
                   </div>
                   <FormControl>
                     <PasswordInput
-                      autoComplete="current-password"
+                      autoComplete="new-password"
                       placeholder="Password"
                       {...field}
                     />
@@ -171,9 +171,12 @@ export function SignInForm() {
       </CardContent>
       <CardFooter>
         <div className="flex w-full justify-center border-t pt-4">
-          <p className="text-muted-foreground text-center text-xs">
+          <p className="text-muted-foreground text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="underline">
+            <Link
+              href="/sign-up"
+              className="hover:text-primary underline underline-offset-4"
+            >
               Sign up
             </Link>
           </p>

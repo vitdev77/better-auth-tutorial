@@ -1,13 +1,13 @@
+import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
 
 export function PasswordInput({
   className,
   ...props
 }: React.ComponentProps<typeof Input>) {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   return (
     <div className="relative">

@@ -1,11 +1,11 @@
 "use client";
 
-import { LoadingButton } from "@/components/loading-button";
+import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { LoadingButton } from "@/components/loading-button";
 
 export function LogoutEverywhereButton() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const router = useRouter();
 

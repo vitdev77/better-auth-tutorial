@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -27,8 +27,8 @@ interface EmailFormProps {
 }
 
 export function EmailForm({ currentEmail }: EmailFormProps) {
-  const [status, setStatus] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
   const form = useForm<UpdateEmailValues>({
     resolver: zodResolver(updateEmailSchema),
