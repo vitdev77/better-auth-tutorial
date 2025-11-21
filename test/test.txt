@@ -39,3 +39,7 @@ STACK_SECRET_SERVER_KEY=provisioning
 # Auth Secret
 BETTER_AUTH_SECRET=a777296c094bae7d964a0440a0a5381c1658ec00070f3122405b80fc6a30d536
 BETTER_AUTH_URL=http://localhost:3000
+
+# Nodemailer
+NODEMAILER_USER="vit.dev.77@gmail.com"
+NODEMAILER_APP_PASSWORD="iazv gbkp tghx goie"

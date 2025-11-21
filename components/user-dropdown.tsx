@@ -3,7 +3,7 @@
 import { LogOutIcon, ShieldIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { unauthorized, useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -13,16 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { signOut } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { User } from "@/lib/auth";
 
-export function UserDropdown() {
-  // TODO: Render real user info
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    image: undefined,
-    role: "admin",
-  };
+interface UserDropdownProps {
+  user: User;
+}
 
+export function UserDropdown({ user }: UserDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,8 +48,7 @@ export function UserDropdown() {
             <UserIcon className="size-4" /> <span>Profile</span>
           </Link>
         </DropdownMenuItem>
-        {/* TODO: Hide admin item for non-admin users */}
-        <AdminItem />
+        {user.role === "admin" && <AdminItem />}
         <SignOutItem />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -71,7 +69,13 @@ function SignOutItem() {
   const router = useRouter();
 
   async function handleSignOut() {
-    // TODO: Handle sign out
+    const { error } = await signOut();
+    if (error) {
+      toast.error(error.message || "Something went wrong.");
+    } else {
+      toast.success("Signed out successfully");
+      router.push("/sign-in");
+    }
   }
 
   return (

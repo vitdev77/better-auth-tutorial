@@ -29,6 +29,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { signIn } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const signInSchema = z.object({
   email: z.email({ message: "Please enter a valid email" }),
@@ -55,7 +57,23 @@ export function SignInForm() {
   });
 
   async function onSubmit({ email, password, rememberMe }: SignInValues) {
-    // TODO: Handle sign in
+    setError(null);
+    setLoading(true);
+
+    const { error } = await signIn.email({
+      email,
+      password,
+      rememberMe,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message || "Something went wrong.");
+    } else {
+      toast.success("Signed in successfully");
+      router.push("/dashboard");
+    }
   }
 
   async function handleSocialSignIn(provider: "google" | "github") {

@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:push": "prisma db push",
+    "prisma:push_fr": "prisma db push --force-reset",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "prisma db seed",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -50,6 +55,7 @@
     "lucide-react": "^0.553.0",
     "next": "16.0.3",
     "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.10",
     "pg": "^8.16.3",
     "react": "19.2.0",
     "react-day-picker": "^9.11.1",
@@ -67,6 +73,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.4",
     "@types/pg": "^8.15.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
