@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -21,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Link from "next/link";
 
 const forgotPasswordSchema = z.object({
   email: z.email({ message: "Please enter a valid email" }),
@@ -90,6 +92,18 @@ export function ForgotPasswordForm() {
           </form>
         </Form>
       </CardContent>
+      <CardFooter>
+        <div className="flex w-full justify-center">
+          <p className="text-muted-foreground text-center text-sm">
+            <Link
+              href="/sign-in"
+              className="hover:text-primary underline underline-offset-4"
+            >
+              Back to Sign in
+            </Link>
+          </p>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

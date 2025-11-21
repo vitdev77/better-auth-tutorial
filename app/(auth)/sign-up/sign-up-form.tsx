@@ -156,7 +156,7 @@ export function SignUpForm() {
         </Form>
       </CardContent>
       <CardFooter>
-        <div className="flex w-full justify-center border-t pt-4">
+        <div className="flex w-full justify-center">
           <p className="text-muted-foreground text-center text-sm">
             Already have an account?{" "}
             <Link
