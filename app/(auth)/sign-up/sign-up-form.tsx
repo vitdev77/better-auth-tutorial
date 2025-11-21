@@ -26,6 +26,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { signUp } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const signUpSchema = z
   .object({
@@ -59,7 +61,21 @@ export function SignUpForm() {
   });
 
   async function onSubmit({ email, password, name }: SignUpValues) {
-    // TODO: Handle sign up
+    setError(null);
+
+    const { error } = await signUp.email({
+      email,
+      password,
+      name,
+      callbackURL: "/email-verified",
+    });
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      toast.success("Signed up successfully");
+      router.push("/dashboard");
+    }
   }
 
   const loading = form.formState.isSubmitting;
@@ -98,7 +114,7 @@ export function SignUpForm() {
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="your@email.com"
+                      placeholder="m@example.com"
                       {...field}
                     />
                   </FormControl>
