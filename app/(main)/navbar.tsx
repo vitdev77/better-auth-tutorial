@@ -8,7 +8,7 @@ export function Navbar() {
   // TODO: Display logged-in user
 
   return (
-    <header className="bg-background border-b">
+    <header className="bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link
           href="/dashboard"
