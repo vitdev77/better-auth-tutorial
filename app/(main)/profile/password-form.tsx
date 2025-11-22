@@ -16,6 +16,7 @@ import { passwordSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { changePassword } from "@/lib/auth-client";
 
 const updatePasswordSchema = z.object({
   currentPassword: z
@@ -42,7 +43,21 @@ export function PasswordForm() {
     currentPassword,
     newPassword,
   }: UpdatePasswordValues) {
-    // TODO: Handle password update
+    setStatus(null);
+    setError(null);
+
+    const { error } = await changePassword({
+      currentPassword,
+      newPassword,
+      revokeOtherSessions: true,
+    });
+
+    if (error) {
+      setError(error.message || "Failed to change password");
+    } else {
+      setStatus("Password successfully changed");
+      form.reset();
+    }
   }
 
   const loading = form.formState.isSubmitting;
@@ -63,7 +78,11 @@ export function PasswordForm() {
                 <FormItem>
                   <FormLabel>Current Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} placeholder="Current password" />
+                    <PasswordInput
+                      placeholder="Current password"
+                      disabled={loading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,7 +95,11 @@ export function PasswordForm() {
                 <FormItem>
                   <FormLabel>New Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} placeholder="New password" />
+                    <PasswordInput
+                      placeholder="New password"
+                      disabled={loading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

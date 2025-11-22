@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { changeEmail } from "@/lib/auth-client";
 
 export const updateEmailSchema = z.object({
   newEmail: z.email({ message: "Enter a valid email" }),
@@ -37,8 +38,20 @@ export function EmailForm({ currentEmail }: EmailFormProps) {
     },
   });
 
-  async function onSubmit(values: UpdateEmailValues) {
-    // TODO: Handle email update
+  async function onSubmit({ newEmail }: UpdateEmailValues) {
+    setStatus(null);
+    setError(null);
+
+    const { error } = await changeEmail({
+      newEmail,
+      callbackURL: "/email-verified",
+    });
+
+    if (error) {
+      setError(error.message || "Failed to initiate email change");
+    } else {
+      setStatus("Verification email sent to your current address");
+    }
   }
 
   const loading = form.formState.isSubmitting;
@@ -61,6 +74,7 @@ export function EmailForm({ currentEmail }: EmailFormProps) {
                     <Input
                       type="email"
                       placeholder="new@email.com"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>
