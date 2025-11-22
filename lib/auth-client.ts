@@ -14,6 +14,7 @@ export const {
   updateUser,
   changeEmail,
   changePassword,
+  revokeSessions,
 } = createAuthClient({
   plugins: [inferAdditionalFields<typeof auth>(), nextCookies()],
 });
