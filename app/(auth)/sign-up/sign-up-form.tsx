@@ -71,7 +71,7 @@ export function SignUpForm() {
     });
 
     if (error) {
-      setError(error.message || "Something went wrong.");
+      setError(error.message || "Something went wrong");
     } else {
       toast.success("Signed up successfully");
       router.push("/dashboard");
@@ -98,7 +98,11 @@ export function SignUpForm() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input
+                      placeholder="John Doe"
+                      disabled={loading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,6 +119,7 @@ export function SignUpForm() {
                     <Input
                       type="email"
                       placeholder="m@example.com"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>
@@ -133,6 +138,7 @@ export function SignUpForm() {
                     <PasswordInput
                       autoComplete="new-password"
                       placeholder="Password"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>
@@ -151,6 +157,7 @@ export function SignUpForm() {
                     <PasswordInput
                       autoComplete="new-password"
                       placeholder="Confirm password"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>

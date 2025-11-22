@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { resetPassword } from "@/lib/auth-client";
 
 const resetPasswordSchema = z.object({
   newPassword: passwordSchema,
@@ -46,7 +47,21 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   });
 
   async function onSubmit({ newPassword }: ResetPasswordValues) {
-    // TODO: Handle password reset request
+    setSuccess(null);
+    setError(null);
+
+    const { error } = await resetPassword({
+      newPassword,
+      token,
+    });
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      setSuccess("Password has been reset. You can sign in now.");
+      setTimeout(() => router.push("/sign-in"), 3000);
+      form.reset();
+    }
   }
 
   const loading = form.formState.isSubmitting;
@@ -72,6 +87,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                     <PasswordInput
                       autoComplete="new-password"
                       placeholder="Enter new password"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>

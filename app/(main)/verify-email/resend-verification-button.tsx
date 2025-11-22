@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { LoadingButton } from "@/components/loading-button";
+import { sendVerificationEmail } from "@/lib/auth-client";
 
 interface ResendVerificationButtonProps {
   email: string;
@@ -15,7 +16,22 @@ export function ResendVerificationButton({
   const [error, setError] = React.useState<string | null>(null);
 
   async function resendVerificationEmail() {
-    // TODO: Resend verification email
+    setSuccess(null);
+    setError(null);
+    setIsLoading(true);
+
+    const { error } = await sendVerificationEmail({
+      email,
+      callbackURL: "/email-verified",
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    } else {
+      setSuccess("Verification email sent successfully");
+    }
   }
 
   return (

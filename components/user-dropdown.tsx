@@ -71,7 +71,7 @@ function SignOutItem() {
   async function handleSignOut() {
     const { error } = await signOut();
     if (error) {
-      toast.error(error.message || "Something went wrong.");
+      toast.error(error.message || "Something went wrong");
     } else {
       toast.success("Signed out successfully");
       router.push("/sign-in");

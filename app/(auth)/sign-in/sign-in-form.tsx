@@ -47,6 +47,8 @@ export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const redirect = searchParams.get("redirect");
+
   const form = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -69,15 +71,27 @@ export function SignInForm() {
     setLoading(false);
 
     if (error) {
-      setError(error.message || "Something went wrong.");
+      setError(error.message || "Something went wrong");
     } else {
       toast.success("Signed in successfully");
-      router.push("/dashboard");
+      router.push(redirect ?? "/dashboard");
     }
   }
 
   async function handleSocialSignIn(provider: "google" | "github") {
-    // TODO: Handle social sign in
+    setError(null);
+    setLoading(true);
+
+    const { error } = await signIn.social({
+      provider,
+      callbackURL: redirect ?? "/dashboard",
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message || "Something went wrong");
+    }
   }
 
   return (
@@ -101,6 +115,7 @@ export function SignInForm() {
                     <Input
                       type="email"
                       placeholder="m@example.com"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>
@@ -127,6 +142,7 @@ export function SignInForm() {
                     <PasswordInput
                       autoComplete="new-password"
                       placeholder="Password"
+                      disabled={loading}
                       {...field}
                     />
                   </FormControl>
@@ -144,6 +160,7 @@ export function SignInForm() {
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      disabled={loading}
                     />
                   </FormControl>
                   <FormLabel>Remember me</FormLabel>
