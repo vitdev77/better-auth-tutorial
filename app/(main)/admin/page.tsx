@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DeleteApplication } from "./delete-application";
 import { getServerSession } from "@/lib/get-session";
 import { forbidden, unauthorized } from "next/navigation";
+import AdminSidebar from "./admin-sidebar";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -17,14 +18,19 @@ export default async function AdminPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12">
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Admin</h1>
-          <p className="text-muted-foreground">
-            You have administrator access.
-          </p>
+      <div className="flex flex-row gap-6">
+        <div className="w-[320px]">
+          <AdminSidebar />
         </div>
-        <DeleteApplication />
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold">Admin</h1>
+            <p className="text-muted-foreground">
+              You have administrator access.
+            </p>
+          </div>
+          <DeleteApplication />
+        </div>
       </div>
     </main>
   );
