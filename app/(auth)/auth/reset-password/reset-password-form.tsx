@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { resetPassword } from "@/lib/auth-client";
+import { AUTH_DIR } from "@/lib/constants";
 
 const resetPasswordSchema = z.object({
   newPassword: passwordSchema,
@@ -59,7 +60,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
       setError(error.message || "Something went wrong");
     } else {
       setSuccess("Password has been reset. You can sign in now.");
-      setTimeout(() => router.push("/sign-in"), 3000);
+      setTimeout(() => router.push(AUTH_DIR + "/sign-in"), 3000);
       form.reset();
     }
   }

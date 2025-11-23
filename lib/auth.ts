@@ -1,9 +1,15 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "@/lib/prisma";
-import { sendEmail } from "@/lib/email";
+import { nextCookies } from "better-auth/next-js";
 import { createAuthMiddleware, APIError } from "better-auth/api";
+import { admin, customSession, magicLink } from "better-auth/plugins";
+
+import prisma from "@/lib/prisma";
+import { hashPassword, verifyPassword } from "@/lib/argon2";
+import { sendEmail } from "@/lib/email";
 import { passwordSchema } from "@/lib/validation";
+import { ac, roles } from "@/lib/permissions";
+import { UserRole } from "@/generated/prisma/client";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -21,6 +27,10 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    password: {
+      hash: hashPassword,
+      verify: verifyPassword,
+    },
     // requireEmailVerification: true, // Only if you want to block login completely
     async sendResetPassword({ user, url }) {
       await sendEmail({
@@ -41,6 +51,21 @@ export const auth = betterAuth({
       });
     },
   },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(";") ?? [];
+
+          if (ADMIN_EMAILS.includes(user.email)) {
+            return { data: { ...user, role: UserRole.ADMIN } };
+          }
+
+          return { data: user };
+        },
+      },
+    },
+  },
   user: {
     changeEmail: {
       enabled: true,
@@ -54,9 +79,26 @@ export const auth = betterAuth({
     },
     additionalFields: {
       role: {
-        type: "string",
+        type: ["USER", "ADMIN"] as Array<UserRole>,
         input: false,
       },
+    },
+  },
+  session: {
+    expiresIn: 30 * 24 * 60 * 60,
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
+  },
+  account: {
+    accountLinking: {
+      enabled: false,
+    },
+  },
+  advanced: {
+    database: {
+      generateId: false,
     },
   },
   hooks: {
@@ -76,7 +118,16 @@ export const auth = betterAuth({
       }
     }),
   },
-});
+  plugins: [
+    nextCookies(),
+    admin({
+      defaultRole: UserRole.USER,
+      adminRoles: [UserRole.ADMIN],
+      ac,
+      roles,
+    }),
+  ],
+} satisfies BetterAuthOptions);
 
 export type Session = typeof auth.$Infer.Session;
 export type User = typeof auth.$Infer.Session.user;

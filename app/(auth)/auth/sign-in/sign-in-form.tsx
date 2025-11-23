@@ -31,6 +31,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { AUTH_DIR } from "@/lib/constants";
 
 const signInSchema = z.object({
   email: z.email({ message: "Please enter a valid email" }),
@@ -132,7 +133,7 @@ export function SignInForm() {
                   <div className="flex items-center">
                     <FormLabel>Password</FormLabel>
                     <Link
-                      href="/forgot-password"
+                      href={AUTH_DIR + "/forgot-password"}
                       className="text-primary ml-auto inline-block text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
@@ -186,7 +187,7 @@ export function SignInForm() {
                 disabled={loading}
                 onClick={() => handleSocialSignIn("google")}
               >
-                <GoogleIcon width="0.98em" height="1em" />
+                <GoogleIcon />
                 Sign in with Google
               </Button>
 
@@ -209,7 +210,7 @@ export function SignInForm() {
           <p className="text-muted-foreground text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link
-              href="/sign-up"
+              href={AUTH_DIR + "/sign-up"}
               className="hover:text-primary underline underline-offset-4"
             >
               Sign up

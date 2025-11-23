@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { requestPasswordReset } from "@/lib/auth-client";
+import { AUTH_DIR } from "@/lib/constants";
 
 const forgotPasswordSchema = z.object({
   email: z.email({ message: "Please enter a valid email" }),
@@ -46,7 +47,7 @@ export function ForgotPasswordForm() {
 
     const { error } = await requestPasswordReset({
       email,
-      redirectTo: "/reset-password",
+      redirectTo: AUTH_DIR + "/reset-password",
     });
 
     if (error) {
@@ -113,7 +114,7 @@ export function ForgotPasswordForm() {
         <div className="flex w-full justify-center">
           <p className="text-muted-foreground text-center text-sm">
             <Link
-              href="/sign-in"
+              href={AUTH_DIR + "/sign-in"}
               className="hover:text-primary underline underline-offset-4"
             >
               Back to Sign in

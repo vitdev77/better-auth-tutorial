@@ -13,43 +13,55 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model User {
-  id            String    @id
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   name          String
-  email         String
+  email         String    @unique
   emailVerified Boolean   @default(false)
   image         String?
-  role          String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  role          UserRole  @default(USER)
+  banned        Boolean?  @default(false)
+  banReason     String?
+  banExpires    DateTime?
 
-  @@unique([email])
-  @@map("user")
+  sessions Session[]
+  accounts Account[]
+
+  @@map("users")
 }
 
 model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
-  @@map("session")
+  expiresAt      DateTime
+  token          String   @unique
+  ipAddress      String?
+  userAgent      String?
+  impersonatedBy String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model Account {
-  id                    String    @id
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   accountId             String
   providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -57,19 +69,78 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
 
-  @@map("account")
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("accounts")
 }
 
 model Verification {
-  id         String   @id
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
 
-  @@map("verification")
+  @@map("verifications")
+}
+
+model Brand {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatadAt DateTime @updatedAt
+
+  name     String
+  imageUrl String?
+
+  series Series[]
+
+  @@map("brands")
+}
+
+model Series {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatadAt DateTime @updatedAt
+
+  name String
+
+  products Product[]
+
+  brandId String
+  brand   Brand  @relation(fields: [brandId], references: [id])
+
+  @@map("series")
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatadAt DateTime @updatedAt
+
+  name     String
+  imageUrl String
+
+  seriesId String
+  series   Series @relation(fields: [seriesId], references: [id])
+
+  productColorId String
+  productColor   ProductColor @relation(fields: [productColorId], references: [id])
+
+  @@map("products")
+}
+
+model ProductColor {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatadAt DateTime @updatedAt
+
+  name String
+
+  products Product[]
+
+  @@map("productColors")
 }

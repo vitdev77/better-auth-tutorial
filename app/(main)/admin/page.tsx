@@ -13,7 +13,7 @@ export default async function AdminPage() {
 
   if (!user) unauthorized();
 
-  if (user.role !== "admin") forbidden();
+  if (user.role !== "ADMIN") forbidden();
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-12">

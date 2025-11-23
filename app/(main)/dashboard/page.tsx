@@ -66,10 +66,10 @@ function ProfileInformation({ user }: ProfileInformationProps) {
               image={user.image}
               className="size-32 sm:size-24"
             />
-            {user.role && (
+            {user.role === "ADMIN" && (
               <Badge>
                 <ShieldIcon className="size-3" />
-                {user.role}
+                admin
               </Badge>
             )}
           </div>

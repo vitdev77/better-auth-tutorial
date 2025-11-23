@@ -16,6 +16,7 @@ import {
 import { signOut } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { User } from "@/lib/auth";
+import { AUTH_DIR } from "@/lib/constants";
 
 interface UserDropdownProps {
   user: User;
@@ -48,7 +49,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
             <UserIcon className="size-4" /> <span>Profile</span>
           </Link>
         </DropdownMenuItem>
-        {user.role === "admin" && <AdminItem />}
+        {user.role === "ADMIN" && <AdminItem />}
         <SignOutItem />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -74,7 +75,7 @@ function SignOutItem() {
       toast.error(error.message || "Something went wrong");
     } else {
       toast.success("Signed out successfully");
-      router.push("/sign-in");
+      router.push(AUTH_DIR + "/sign-in");
     }
   }
 

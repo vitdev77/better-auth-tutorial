@@ -10,7 +10,7 @@ export async function deleteApplication() {
 
   if (!user) unauthorized();
 
-  if (user.role !== "admin") forbidden();
+  if (user.role !== "ADMIN") forbidden();
 
   // Delete app...
 

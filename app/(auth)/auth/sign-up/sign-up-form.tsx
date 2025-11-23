@@ -28,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { AUTH_DIR } from "@/lib/constants";
 
 const signUpSchema = z
   .object({
@@ -183,7 +184,7 @@ export function SignUpForm() {
           <p className="text-muted-foreground text-center text-sm">
             Already have an account?{" "}
             <Link
-              href="/sign-in"
+              href={AUTH_DIR + "/sign-in"}
               className="hover:text-primary underline underline-offset-4"
             >
               Sign in
