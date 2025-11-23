@@ -89,7 +89,7 @@ model Verification {
 }
 
 model Brand {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatadAt DateTime @updatedAt
 
@@ -102,45 +102,44 @@ model Brand {
 }
 
 model Series {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatadAt DateTime @updatedAt
 
   name String
 
-  products Product[]
+  brandId Int
+  brand   Brand @relation(fields: [brandId], references: [id])
 
-  brandId String
-  brand   Brand  @relation(fields: [brandId], references: [id])
+  models Model[]
 
   @@map("series")
 }
 
-model Product {
-  id        String   @id @default(uuid())
+model Model {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatadAt DateTime @updatedAt
 
   name     String
-  imageUrl String
+  imageUrl String?
 
-  seriesId String
-  series   Series @relation(fields: [seriesId], references: [id])
+  modelColorId Int
+  modelColor   ModelColor @relation(fields: [modelColorId], references: [id])
+  seriesId     Int
+  series       Series     @relation(fields: [seriesId], references: [id])
 
-  productColorId String
-  productColor   ProductColor @relation(fields: [productColorId], references: [id])
-
-  @@map("products")
+  @@map("models")
 }
 
-model ProductColor {
-  id        String   @id @default(uuid())
+model ModelColor {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatadAt DateTime @updatedAt
 
   name String
 
-  products Product[]
+  models Model[]
 
-  @@map("productColors")
+  @@map("model_colors")
 }

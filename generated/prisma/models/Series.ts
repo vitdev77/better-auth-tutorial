@@ -20,24 +20,36 @@ export type SeriesModel = runtime.Types.Result.DefaultSelection<Prisma.$SeriesPa
 
 export type AggregateSeries = {
   _count: SeriesCountAggregateOutputType | null
+  _avg: SeriesAvgAggregateOutputType | null
+  _sum: SeriesSumAggregateOutputType | null
   _min: SeriesMinAggregateOutputType | null
   _max: SeriesMaxAggregateOutputType | null
 }
 
+export type SeriesAvgAggregateOutputType = {
+  id: number | null
+  brandId: number | null
+}
+
+export type SeriesSumAggregateOutputType = {
+  id: number | null
+  brandId: number | null
+}
+
 export type SeriesMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   createdAt: Date | null
   updatadAt: Date | null
   name: string | null
-  brandId: string | null
+  brandId: number | null
 }
 
 export type SeriesMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   createdAt: Date | null
   updatadAt: Date | null
   name: string | null
-  brandId: string | null
+  brandId: number | null
 }
 
 export type SeriesCountAggregateOutputType = {
@@ -49,6 +61,16 @@ export type SeriesCountAggregateOutputType = {
   _all: number
 }
 
+
+export type SeriesAvgAggregateInputType = {
+  id?: true
+  brandId?: true
+}
+
+export type SeriesSumAggregateInputType = {
+  id?: true
+  brandId?: true
+}
 
 export type SeriesMinAggregateInputType = {
   id?: true
@@ -113,6 +135,18 @@ export type SeriesAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: SeriesAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: SeriesSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: SeriesMinAggregateInputType
@@ -143,17 +177,21 @@ export type SeriesGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: SeriesCountAggregateInputType | true
+  _avg?: SeriesAvgAggregateInputType
+  _sum?: SeriesSumAggregateInputType
   _min?: SeriesMinAggregateInputType
   _max?: SeriesMaxAggregateInputType
 }
 
 export type SeriesGroupByOutputType = {
-  id: string
+  id: number
   createdAt: Date
   updatadAt: Date
   name: string
-  brandId: string
+  brandId: number
   _count: SeriesCountAggregateOutputType | null
+  _avg: SeriesAvgAggregateOutputType | null
+  _sum: SeriesSumAggregateOutputType | null
   _min: SeriesMinAggregateOutputType | null
   _max: SeriesMaxAggregateOutputType | null
 }
@@ -177,13 +215,13 @@ export type SeriesWhereInput = {
   AND?: Prisma.SeriesWhereInput | Prisma.SeriesWhereInput[]
   OR?: Prisma.SeriesWhereInput[]
   NOT?: Prisma.SeriesWhereInput | Prisma.SeriesWhereInput[]
-  id?: Prisma.StringFilter<"Series"> | string
+  id?: Prisma.IntFilter<"Series"> | number
   createdAt?: Prisma.DateTimeFilter<"Series"> | Date | string
   updatadAt?: Prisma.DateTimeFilter<"Series"> | Date | string
   name?: Prisma.StringFilter<"Series"> | string
-  brandId?: Prisma.StringFilter<"Series"> | string
-  products?: Prisma.ProductListRelationFilter
+  brandId?: Prisma.IntFilter<"Series"> | number
   brand?: Prisma.XOR<Prisma.BrandScalarRelationFilter, Prisma.BrandWhereInput>
+  models?: Prisma.ModelListRelationFilter
 }
 
 export type SeriesOrderByWithRelationInput = {
@@ -192,21 +230,21 @@ export type SeriesOrderByWithRelationInput = {
   updatadAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   brandId?: Prisma.SortOrder
-  products?: Prisma.ProductOrderByRelationAggregateInput
   brand?: Prisma.BrandOrderByWithRelationInput
+  models?: Prisma.ModelOrderByRelationAggregateInput
 }
 
 export type SeriesWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.SeriesWhereInput | Prisma.SeriesWhereInput[]
   OR?: Prisma.SeriesWhereInput[]
   NOT?: Prisma.SeriesWhereInput | Prisma.SeriesWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Series"> | Date | string
   updatadAt?: Prisma.DateTimeFilter<"Series"> | Date | string
   name?: Prisma.StringFilter<"Series"> | string
-  brandId?: Prisma.StringFilter<"Series"> | string
-  products?: Prisma.ProductListRelationFilter
+  brandId?: Prisma.IntFilter<"Series"> | number
   brand?: Prisma.XOR<Prisma.BrandScalarRelationFilter, Prisma.BrandWhereInput>
+  models?: Prisma.ModelListRelationFilter
 }, "id">
 
 export type SeriesOrderByWithAggregationInput = {
@@ -216,78 +254,77 @@ export type SeriesOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   brandId?: Prisma.SortOrder
   _count?: Prisma.SeriesCountOrderByAggregateInput
+  _avg?: Prisma.SeriesAvgOrderByAggregateInput
   _max?: Prisma.SeriesMaxOrderByAggregateInput
   _min?: Prisma.SeriesMinOrderByAggregateInput
+  _sum?: Prisma.SeriesSumOrderByAggregateInput
 }
 
 export type SeriesScalarWhereWithAggregatesInput = {
   AND?: Prisma.SeriesScalarWhereWithAggregatesInput | Prisma.SeriesScalarWhereWithAggregatesInput[]
   OR?: Prisma.SeriesScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SeriesScalarWhereWithAggregatesInput | Prisma.SeriesScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Series"> | string
+  id?: Prisma.IntWithAggregatesFilter<"Series"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Series"> | Date | string
   updatadAt?: Prisma.DateTimeWithAggregatesFilter<"Series"> | Date | string
   name?: Prisma.StringWithAggregatesFilter<"Series"> | string
-  brandId?: Prisma.StringWithAggregatesFilter<"Series"> | string
+  brandId?: Prisma.IntWithAggregatesFilter<"Series"> | number
 }
 
 export type SeriesCreateInput = {
-  id?: string
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
-  products?: Prisma.ProductCreateNestedManyWithoutSeriesInput
   brand: Prisma.BrandCreateNestedOneWithoutSeriesInput
+  models?: Prisma.ModelCreateNestedManyWithoutSeriesInput
 }
 
 export type SeriesUncheckedCreateInput = {
-  id?: string
+  id?: number
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
-  brandId: string
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutSeriesInput
+  brandId: number
+  models?: Prisma.ModelUncheckedCreateNestedManyWithoutSeriesInput
 }
 
 export type SeriesUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  products?: Prisma.ProductUpdateManyWithoutSeriesNestedInput
   brand?: Prisma.BrandUpdateOneRequiredWithoutSeriesNestedInput
+  models?: Prisma.ModelUpdateManyWithoutSeriesNestedInput
 }
 
 export type SeriesUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  brandId?: Prisma.StringFieldUpdateOperationsInput | string
-  products?: Prisma.ProductUncheckedUpdateManyWithoutSeriesNestedInput
+  brandId?: Prisma.IntFieldUpdateOperationsInput | number
+  models?: Prisma.ModelUncheckedUpdateManyWithoutSeriesNestedInput
 }
 
 export type SeriesCreateManyInput = {
-  id?: string
+  id?: number
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
-  brandId: string
+  brandId: number
 }
 
 export type SeriesUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SeriesUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  brandId?: Prisma.StringFieldUpdateOperationsInput | string
+  brandId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SeriesListRelationFilter = {
@@ -308,6 +345,11 @@ export type SeriesCountOrderByAggregateInput = {
   brandId?: Prisma.SortOrder
 }
 
+export type SeriesAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  brandId?: Prisma.SortOrder
+}
+
 export type SeriesMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -321,6 +363,11 @@ export type SeriesMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatadAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  brandId?: Prisma.SortOrder
+}
+
+export type SeriesSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   brandId?: Prisma.SortOrder
 }
 
@@ -371,34 +418,33 @@ export type SeriesUncheckedUpdateManyWithoutBrandNestedInput = {
   deleteMany?: Prisma.SeriesScalarWhereInput | Prisma.SeriesScalarWhereInput[]
 }
 
-export type SeriesCreateNestedOneWithoutProductsInput = {
-  create?: Prisma.XOR<Prisma.SeriesCreateWithoutProductsInput, Prisma.SeriesUncheckedCreateWithoutProductsInput>
-  connectOrCreate?: Prisma.SeriesCreateOrConnectWithoutProductsInput
+export type SeriesCreateNestedOneWithoutModelsInput = {
+  create?: Prisma.XOR<Prisma.SeriesCreateWithoutModelsInput, Prisma.SeriesUncheckedCreateWithoutModelsInput>
+  connectOrCreate?: Prisma.SeriesCreateOrConnectWithoutModelsInput
   connect?: Prisma.SeriesWhereUniqueInput
 }
 
-export type SeriesUpdateOneRequiredWithoutProductsNestedInput = {
-  create?: Prisma.XOR<Prisma.SeriesCreateWithoutProductsInput, Prisma.SeriesUncheckedCreateWithoutProductsInput>
-  connectOrCreate?: Prisma.SeriesCreateOrConnectWithoutProductsInput
-  upsert?: Prisma.SeriesUpsertWithoutProductsInput
+export type SeriesUpdateOneRequiredWithoutModelsNestedInput = {
+  create?: Prisma.XOR<Prisma.SeriesCreateWithoutModelsInput, Prisma.SeriesUncheckedCreateWithoutModelsInput>
+  connectOrCreate?: Prisma.SeriesCreateOrConnectWithoutModelsInput
+  upsert?: Prisma.SeriesUpsertWithoutModelsInput
   connect?: Prisma.SeriesWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SeriesUpdateToOneWithWhereWithoutProductsInput, Prisma.SeriesUpdateWithoutProductsInput>, Prisma.SeriesUncheckedUpdateWithoutProductsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SeriesUpdateToOneWithWhereWithoutModelsInput, Prisma.SeriesUpdateWithoutModelsInput>, Prisma.SeriesUncheckedUpdateWithoutModelsInput>
 }
 
 export type SeriesCreateWithoutBrandInput = {
-  id?: string
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
-  products?: Prisma.ProductCreateNestedManyWithoutSeriesInput
+  models?: Prisma.ModelCreateNestedManyWithoutSeriesInput
 }
 
 export type SeriesUncheckedCreateWithoutBrandInput = {
-  id?: string
+  id?: number
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutSeriesInput
+  models?: Prisma.ModelUncheckedCreateNestedManyWithoutSeriesInput
 }
 
 export type SeriesCreateOrConnectWithoutBrandInput = {
@@ -431,86 +477,83 @@ export type SeriesScalarWhereInput = {
   AND?: Prisma.SeriesScalarWhereInput | Prisma.SeriesScalarWhereInput[]
   OR?: Prisma.SeriesScalarWhereInput[]
   NOT?: Prisma.SeriesScalarWhereInput | Prisma.SeriesScalarWhereInput[]
-  id?: Prisma.StringFilter<"Series"> | string
+  id?: Prisma.IntFilter<"Series"> | number
   createdAt?: Prisma.DateTimeFilter<"Series"> | Date | string
   updatadAt?: Prisma.DateTimeFilter<"Series"> | Date | string
   name?: Prisma.StringFilter<"Series"> | string
-  brandId?: Prisma.StringFilter<"Series"> | string
+  brandId?: Prisma.IntFilter<"Series"> | number
 }
 
-export type SeriesCreateWithoutProductsInput = {
-  id?: string
+export type SeriesCreateWithoutModelsInput = {
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
   brand: Prisma.BrandCreateNestedOneWithoutSeriesInput
 }
 
-export type SeriesUncheckedCreateWithoutProductsInput = {
-  id?: string
+export type SeriesUncheckedCreateWithoutModelsInput = {
+  id?: number
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
-  brandId: string
+  brandId: number
 }
 
-export type SeriesCreateOrConnectWithoutProductsInput = {
+export type SeriesCreateOrConnectWithoutModelsInput = {
   where: Prisma.SeriesWhereUniqueInput
-  create: Prisma.XOR<Prisma.SeriesCreateWithoutProductsInput, Prisma.SeriesUncheckedCreateWithoutProductsInput>
+  create: Prisma.XOR<Prisma.SeriesCreateWithoutModelsInput, Prisma.SeriesUncheckedCreateWithoutModelsInput>
 }
 
-export type SeriesUpsertWithoutProductsInput = {
-  update: Prisma.XOR<Prisma.SeriesUpdateWithoutProductsInput, Prisma.SeriesUncheckedUpdateWithoutProductsInput>
-  create: Prisma.XOR<Prisma.SeriesCreateWithoutProductsInput, Prisma.SeriesUncheckedCreateWithoutProductsInput>
+export type SeriesUpsertWithoutModelsInput = {
+  update: Prisma.XOR<Prisma.SeriesUpdateWithoutModelsInput, Prisma.SeriesUncheckedUpdateWithoutModelsInput>
+  create: Prisma.XOR<Prisma.SeriesCreateWithoutModelsInput, Prisma.SeriesUncheckedCreateWithoutModelsInput>
   where?: Prisma.SeriesWhereInput
 }
 
-export type SeriesUpdateToOneWithWhereWithoutProductsInput = {
+export type SeriesUpdateToOneWithWhereWithoutModelsInput = {
   where?: Prisma.SeriesWhereInput
-  data: Prisma.XOR<Prisma.SeriesUpdateWithoutProductsInput, Prisma.SeriesUncheckedUpdateWithoutProductsInput>
+  data: Prisma.XOR<Prisma.SeriesUpdateWithoutModelsInput, Prisma.SeriesUncheckedUpdateWithoutModelsInput>
 }
 
-export type SeriesUpdateWithoutProductsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+export type SeriesUpdateWithoutModelsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   brand?: Prisma.BrandUpdateOneRequiredWithoutSeriesNestedInput
 }
 
-export type SeriesUncheckedUpdateWithoutProductsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+export type SeriesUncheckedUpdateWithoutModelsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  brandId?: Prisma.StringFieldUpdateOperationsInput | string
+  brandId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SeriesCreateManyBrandInput = {
-  id?: string
+  id?: number
   createdAt?: Date | string
   updatadAt?: Date | string
   name: string
 }
 
 export type SeriesUpdateWithoutBrandInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  products?: Prisma.ProductUpdateManyWithoutSeriesNestedInput
+  models?: Prisma.ModelUpdateManyWithoutSeriesNestedInput
 }
 
 export type SeriesUncheckedUpdateWithoutBrandInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  products?: Prisma.ProductUncheckedUpdateManyWithoutSeriesNestedInput
+  models?: Prisma.ModelUncheckedUpdateManyWithoutSeriesNestedInput
 }
 
 export type SeriesUncheckedUpdateManyWithoutBrandInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatadAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -522,11 +565,11 @@ export type SeriesUncheckedUpdateManyWithoutBrandInput = {
  */
 
 export type SeriesCountOutputType = {
-  products: number
+  models: number
 }
 
 export type SeriesCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  products?: boolean | SeriesCountOutputTypeCountProductsArgs
+  models?: boolean | SeriesCountOutputTypeCountModelsArgs
 }
 
 /**
@@ -542,8 +585,8 @@ export type SeriesCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * SeriesCountOutputType without action
  */
-export type SeriesCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ProductWhereInput
+export type SeriesCountOutputTypeCountModelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ModelWhereInput
 }
 
 
@@ -553,8 +596,8 @@ export type SeriesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   updatadAt?: boolean
   name?: boolean
   brandId?: boolean
-  products?: boolean | Prisma.Series$productsArgs<ExtArgs>
   brand?: boolean | Prisma.BrandDefaultArgs<ExtArgs>
+  models?: boolean | Prisma.Series$modelsArgs<ExtArgs>
   _count?: boolean | Prisma.SeriesCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["series"]>
 
@@ -586,8 +629,8 @@ export type SeriesSelectScalar = {
 
 export type SeriesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatadAt" | "name" | "brandId", ExtArgs["result"]["series"]>
 export type SeriesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  products?: boolean | Prisma.Series$productsArgs<ExtArgs>
   brand?: boolean | Prisma.BrandDefaultArgs<ExtArgs>
+  models?: boolean | Prisma.Series$modelsArgs<ExtArgs>
   _count?: boolean | Prisma.SeriesCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SeriesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -600,15 +643,15 @@ export type SeriesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $SeriesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Series"
   objects: {
-    products: Prisma.$ProductPayload<ExtArgs>[]
     brand: Prisma.$BrandPayload<ExtArgs>
+    models: Prisma.$ModelPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     createdAt: Date
     updatadAt: Date
     name: string
-    brandId: string
+    brandId: number
   }, ExtArgs["result"]["series"]>
   composites: {}
 }
@@ -1003,8 +1046,8 @@ readonly fields: SeriesFieldRefs;
  */
 export interface Prisma__SeriesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  products<T extends Prisma.Series$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Series$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   brand<T extends Prisma.BrandDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BrandDefaultArgs<ExtArgs>>): Prisma.Prisma__BrandClient<runtime.Types.Result.GetResult<Prisma.$BrandPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  models<T extends Prisma.Series$modelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Series$modelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1034,11 +1077,11 @@ export interface Prisma__SeriesClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Series model
  */
 export interface SeriesFieldRefs {
-  readonly id: Prisma.FieldRef<"Series", 'String'>
+  readonly id: Prisma.FieldRef<"Series", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Series", 'DateTime'>
   readonly updatadAt: Prisma.FieldRef<"Series", 'DateTime'>
   readonly name: Prisma.FieldRef<"Series", 'String'>
-  readonly brandId: Prisma.FieldRef<"Series", 'String'>
+  readonly brandId: Prisma.FieldRef<"Series", 'Int'>
 }
     
 
@@ -1435,27 +1478,27 @@ export type SeriesDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Series.products
+ * Series.models
  */
-export type Series$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Series$modelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Product
+   * Select specific fields to fetch from the Model
    */
-  select?: Prisma.ProductSelect<ExtArgs> | null
+  select?: Prisma.ModelSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Product
+   * Omit specific fields from the Model
    */
-  omit?: Prisma.ProductOmit<ExtArgs> | null
+  omit?: Prisma.ModelOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProductInclude<ExtArgs> | null
-  where?: Prisma.ProductWhereInput
-  orderBy?: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[]
-  cursor?: Prisma.ProductWhereUniqueInput
+  include?: Prisma.ModelInclude<ExtArgs> | null
+  where?: Prisma.ModelWhereInput
+  orderBy?: Prisma.ModelOrderByWithRelationInput | Prisma.ModelOrderByWithRelationInput[]
+  cursor?: Prisma.ModelWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
+  distinct?: Prisma.ModelScalarFieldEnum | Prisma.ModelScalarFieldEnum[]
 }
 
 /**
